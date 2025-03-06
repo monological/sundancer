@@ -2510,6 +2510,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "fpga"
+version = "0.1.0"
+dependencies = [
+ "bincode",
+ "cc",
+ "pkg-config",
+ "solana-hash",
+ "solana-message",
+ "solana-packet",
+ "solana-pubkey",
+ "solana-sdk",
+ "solana-sdk-ids",
+ "solana-short-vec",
+ "solana-signature",
+]
+
+[[package]]
 name = "fragile"
 version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -8538,6 +8555,7 @@ dependencies = [
  "curve25519-dalek 4.1.3",
  "dlopen2",
  "fnv",
+ "fpga",
  "lazy_static",
  "libc",
  "log",

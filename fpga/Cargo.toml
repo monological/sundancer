@@ -1,0 +1,20 @@
+[package]
+name = "fpga"
+version = "0.1.0"
+edition = "2021"
+build = "build.rs"
+
+[dependencies]
+bincode = { workspace = true }
+solana-hash = { workspace = true }
+solana-packet = { workspace = true, features = ["bincode"] }
+solana-pubkey = { workspace = true }
+solana-message = { workspace = true }
+solana-signature = { workspace = true, features = ["verify"] }
+solana-short-vec = { workspace = true }
+solana-sdk = { workspace = true }
+solana-sdk-ids = { workspace = true }
+
+[build-dependencies]
+cc = "1.0"
+pkg-config = "0.3"

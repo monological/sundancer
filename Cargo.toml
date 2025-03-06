@@ -49,6 +49,7 @@ members = [
     "entry",
     "faucet",
     "fee",
+    "fpga",
     "genesis",
     "genesis-utils",
     "geyser-plugin-interface",
@@ -245,6 +246,7 @@ fd-lock = "3.0.13"
 flate2 = "1.0.31"
 five8_const = "0.1.3"
 fnv = "1.0.7"
+fpga = { path = "fpga" }
 fs_extra = "1.3.0"
 futures = "0.3.31"
 futures-util = "0.3.29"
