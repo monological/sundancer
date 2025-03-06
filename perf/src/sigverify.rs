@@ -20,6 +20,8 @@ use {
     std::{convert::TryFrom, mem::size_of},
 };
 
+use fpga::ed25519_verify_fpga_batch;
+
 // Empirically derived to constrain max verify latency to ~8ms at lower packet counts
 pub const VERIFY_PACKET_CHUNK_SIZE: usize = 128;
 
@@ -487,6 +489,23 @@ pub fn ed25519_verify_cpu(batches: &mut [PacketBatch], reject_non_vote: bool, pa
     });
 }
 
+pub fn ed25519_verify_fpga(
+    batches: &mut [PacketBatch],
+    reject_non_vote: bool,
+    packet_count: usize
+) {
+    debug!("FPGA ECDSA for {}", packet_count);
+    for batch in batches.iter_mut() {
+        let results = ed25519_verify_fpga_batch(&mut batch[..], reject_non_vote);
+
+        for (packet, &ok) in batch.iter_mut().zip(results.iter()) {
+            if !ok {
+                packet.meta_mut().set_discard(true);
+            }
+        }
+    }
+}
+
 pub fn ed25519_verify_disabled(batches: &mut [PacketBatch]) {
     let packet_count = count_packets_in_batches(batches);
     debug!("disabled ECDSA for {}", packet_count);
@@ -557,6 +576,11 @@ pub fn ed25519_verify(
     reject_non_vote: bool,
     valid_packet_count: usize,
 ) {
+
+    if fpga::is_available() {
+        ed25519_verify_fpga(batches, reject_non_vote, valid_packet_count);
+        return;
+    }
     let Some(api) = perf_libs::api() else {
         return ed25519_verify_cpu(batches, reject_non_vote, valid_packet_count);
     };

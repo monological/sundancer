@@ -150,6 +150,7 @@ use {
     strum_macros::{Display, EnumCount, EnumIter, EnumString, EnumVariantNames, IntoStaticStr},
     thiserror::Error,
     tokio::runtime::Runtime as TokioRuntime,
+    fpga::is_available,
 };
 
 const MAX_COMPLETED_DATA_SETS_IN_CHANNEL: usize = 100_000;
@@ -696,11 +697,20 @@ impl Validator {
             info!("entrypoint: {:?}", cluster_entrypoint);
         }
 
+        
+
         if solana_perf::perf_libs::api().is_some() {
             info!("Initializing sigverify, this could take a while...");
         } else {
             info!("Initializing sigverify...");
         }
+
+        if fpga::is_available() {
+            info!("FPGA is available for signature verification");
+        } else {
+            info!("FPGA is not available for signature verification");
+        }
+
         sigverify::init();
         info!("Initializing sigverify done.");
 

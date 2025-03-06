@@ -7233,6 +7233,7 @@ dependencies = [
  "crossbeam-channel",
  "dashmap",
  "etcd-client",
+ "fpga",
  "fs_extra",
  "futures 0.3.31",
  "histogram",
